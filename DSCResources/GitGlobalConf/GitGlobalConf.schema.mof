@@ -1,0 +1,6 @@
+[ClassVersion("1.0.0"), FriendlyName("GitGlobalConf")]
+class GitGlobalConf : OMI_BaseResource
+{
+    [Key] string Name;
+    [Required] string Config[];
+};
