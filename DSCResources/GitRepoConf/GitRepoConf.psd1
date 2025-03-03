@@ -1,15 +1,14 @@
 @{
     ModuleVersion = '1.0.0'
-    GUID = '1f7f9386-cb25-49f5-98e2-43b9629e0eef'
+    GUID = '991a2593-01ed-4c9a-b250-77bd801a4e4e'
     Author = 'Charles GERARD-LE METAYER'
-    Description = 'Module DSC pour gérer les configurations Git et la synchronisation des dépôts.'
+    Description = 'Ressource DSC permettant de configurer les paramètres Git locaux pour un dépôt spécifique.'
     PowerShellVersion = '5.1'
-    RootModule = 'GitDSC.psm1'
     RequiredModules = @('PSDesiredStateConfiguration')
     CompatiblePSEditions = @('Desktop', 'Core')
-    DscResourcesToExport = @('GitGlobalConf', 'GitRepoConf', 'GitSync')
+    DscResourcesToExport = @('GitRepoConf')
     LicenseUri = ''
     ProjectUri = 'https://github.com/gerardlemetayerc/GitDsc'
-    Tags = @('DSC', 'Git', 'Configuration', 'Automation')
+    Tags = @('DSC', 'Git', 'Configuration')
     HelpInfoURI = ''
 }
