@@ -55,7 +55,7 @@ class GitSync {
                 throw "Erreur : Un token est requis pour l'authentification de type 'token'."
             }
             $Password = $this.Credential.GetNetworkCredential().Password
-            $AuthRepoUrl = $this.GitRepositoryUrl -replace "https://", "https://${Password}@"
+            $AuthRepoUrl = $this.GitRepositoryUrl -replace "https://", "https://$Password@"
         }
         elseif ($this.AuthType -eq "basic") {
             if ($null -eq $this.Credential) {
@@ -63,7 +63,7 @@ class GitSync {
             }
             $Username = $this.Credential.UserName
             $Password = $this.Credential.GetNetworkCredential().Password
-            $AuthRepoUrl = "https://${Username}:${Password}@${($this.GitRepositoryUrl -replace '^https://')}"
+            $AuthRepoUrl = "https://{0}:{1}@{2}" -f $Username, $Password, $($($this.GitRepositoryUrl -replace '^https://'))
         }
 
         if (-Not (Test-Path $this.LocalPath)) {
