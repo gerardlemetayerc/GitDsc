@@ -4,7 +4,7 @@ class GitSync : OMI_BaseResource
     [Key] string GitRepositoryUrl;
     [Required] string LocalPath;
     [Required] string Branch;
-    [Required] [EmbeddedInstance("MSFT_Credential")] string Credential;
-    [Required] string AuthType;
+    [Write, EmbeddedInstance("MSFT_Credential")] string Credential;
+    [Required, ValueMap{"token", "basic", "none"}, Values{"token", "basic", "none"}] string AuthType;
     [Write, ValueMap{"true", "false"}, Values{"true", "false"}] boolean ForceSync;
 };

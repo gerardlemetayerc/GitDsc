@@ -8,20 +8,8 @@ class GitRepoConf {
     [DscProperty(Mandatory)]
     [Hashtable] $Config  # Clé/valeurs des paramètres Git locaux
 
-    [void] Get() {
-        if (-Not (Test-Path "$this.RepoPath\.git")) {
-            Write-Host "Le chemin $this.RepoPath n'est pas un dépôt Git."
-            return @{ RepoPath = $this.RepoPath; Config = @{} }
-        }
-
-        $currentConfig = @{}
-        foreach ($Key in $this.Config.Keys) {
-            $Value = git -C $this.RepoPath config --get $Key
-            if ($Value) {
-                $currentConfig[$Key] = $Value
-            }
-        }
-        return @{ RepoPath = $this.RepoPath; Config = $currentConfig }
+    [GitRepoConf] Get() {
+        return $this
     }
 
     [bool] Test() {
@@ -47,7 +35,7 @@ class GitRepoConf {
         }
 
         foreach ($Key in $this.Config.Keys) {
-            Write-Host "Appliquer la configuration Git locale pour $this.RepoPath : $Key = $($this.Config[$Key])"
+            Write-Host "Application de la configuration Git locale pour $this.RepoPath : $Key = $($this.Config[$Key])"
             git -C $this.RepoPath config $Key "$($this.Config[$Key])"
         }
     }

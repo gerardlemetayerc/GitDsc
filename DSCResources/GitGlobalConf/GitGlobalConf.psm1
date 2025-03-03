@@ -3,20 +3,13 @@ using module PSDesiredStateConfiguration
 [DscResource()]
 class GitGlobalConf {
     [DscProperty(Key)]
-    [string] $Name  # Nom de la configuration globale (uniquement utilisé comme clé)
+    [string] $Name  # Nom de la configuration globale (clé d’identification)
 
     [DscProperty(Mandatory)]
-    [Hashtable] $Config  # Clé/valeurs des paramètres globaux Git
+    [Hashtable] $Config  # Clé/valeurs des paramètres Git globaux
 
-    [void] Get() {
-        $currentConfig = @{}
-        foreach ($Key in $this.Config.Keys) {
-            $Value = git config --global --get $Key
-            if ($Value) {
-                $currentConfig[$Key] = $Value
-            }
-        }
-        return @{ Name = $this.Name; Config = $currentConfig }
+    [GitGlobalConf] Get() {
+        return $this
     }
 
     [bool] Test() {
@@ -32,7 +25,7 @@ class GitGlobalConf {
 
     [void] Set() {
         foreach ($Key in $this.Config.Keys) {
-            Write-Host "Appliquer la configuration Git globale : $Key = $($this.Config[$Key])"
+            Write-Host "Application de la configuration Git globale : $Key = $($this.Config[$Key])"
             git config --global $Key "$($this.Config[$Key])"
         }
     }
