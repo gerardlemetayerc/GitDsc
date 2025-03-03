@@ -8,8 +8,5 @@
     RequiredModules = @('PSDesiredStateConfiguration')
     CompatiblePSEditions = @('Desktop', 'Core')
     DscResourcesToExport = @('GitGlobalConf', 'GitRepoConf', 'GitSync')
-    LicenseUri = ''
-    ProjectUri = 'https://github.com/gerardlemetayerc/GitDsc'
-    Tags = @('DSC', 'Git', 'Configuration', 'Automation')
     HelpInfoURI = ''
 }
