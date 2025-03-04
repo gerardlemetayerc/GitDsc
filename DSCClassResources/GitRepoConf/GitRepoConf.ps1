@@ -1,5 +1,3 @@
-using module PSDesiredStateConfiguration
-
 [DscResource()]
 class GitRepoConf {
     [DscProperty(Key)]

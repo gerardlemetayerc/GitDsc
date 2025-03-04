@@ -1,5 +1,3 @@
-using module PSDesiredStateConfiguration
-
 [DscResource()]
 class GitGlobalConf {
     [DscProperty(Key)]

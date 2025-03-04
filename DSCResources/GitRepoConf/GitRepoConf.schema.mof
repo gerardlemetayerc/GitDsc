@@ -1,6 +1,0 @@
-[ClassVersion("1.0.0"), FriendlyName("GitRepoConf")]
-class GitRepoConf : OMI_BaseResource
-{
-    [Key] string RepoPath;
-    [Required] string Config[];
-};
