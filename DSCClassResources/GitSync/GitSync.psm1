@@ -23,9 +23,9 @@ class GitSync {
     }
 
     [bool] Test() {
-        Write-Verbose "Vérification du répertoire $($this.LocalPath)"
+        Write-Verbose "Checking directory $($this.LocalPath)"
         if (-Not (Test-Path $this.LocalPath)) { 
-            Write-Verbose "Le répertoire $($this.LocalPath) n'existe pas."
+            Write-Verbose "Directory $($this.LocalPath) does not exist."
             return $false 
         }
 
@@ -36,7 +36,7 @@ class GitSync {
 
         $CurrentBranch = git -C $this.LocalPath rev-parse --abbrev-ref HEAD
         if ($CurrentBranch -ne $this.Branch) {
-            Write-Verbose "La branche actuelle ($CurrentBranch) ne correspond pas à $($this.Branch)."
+            Write-Verbose "Current branch ($CurrentBranch) is not target branch $($this.Branch)."
             return $false
         }
 
@@ -44,7 +44,7 @@ class GitSync {
         $RemoteHash = git -C $this.LocalPath ls-remote origin $this.Branch | ForEach-Object { $_ -split "`t" } | Select-Object -First 1
 
         if ($LocalHash -ne $RemoteHash) {
-            Write-Verbose "Le dépôt local n'est pas à jour avec le dépôt distant."
+            Write-Verbose "Repository is not up to date."
             return $false
         }
 
@@ -56,7 +56,7 @@ class GitSync {
 
         if ($this.AuthType -eq "token") {
             if ($null -eq $this.Credential) {
-                throw "Erreur : Un token est requis pour l'authentification de type 'token'."
+                throw "Erreur : Token is needed when 'token' authentication is set."
             }
             $Password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
                 [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($this.Credential.Password)
@@ -65,7 +65,7 @@ class GitSync {
         }
         elseif ($this.AuthType -eq "basic") {
             if ($null -eq $this.Credential) {
-                throw "Erreur : Un identifiant et un mot de passe sont requis pour l'authentification Basic."
+                throw "Error : Credentials are needed when basic authentication is set."
             }
             $Username = $this.Credential.UserName
             $Password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
@@ -77,27 +77,27 @@ class GitSync {
         if (-Not (Test-Path "$($this.LocalPath)\.git")) {
             
             New-Item -ItemType Directory -Path $this.LocalPath -Force 
-            Write-Verbose "Clonage du dépôt Git dans $($this.LocalPath)..."
+            Write-Verbose "Cloning repository into $($this.LocalPath)..."
             Remove-Item -Recurse -Force -Path $this.LocalPath -ErrorAction SilentlyContinue
             $cloneResult = git clone --branch $this.Branch "$AuthRepoUrl" $this.LocalPath 2>&1
 
             if ($LASTEXITCODE -ne 0) {
-                Write-Error "Échec du clonage du dépôt : $cloneResult"
+                Write-Error "Failed to clone repository : $cloneResult"
                 return
             }
         }
         else {
             if ($this.ForceSync) {
-                Write-Verbose "Réinitialisation du dépôt local..."
+                Write-Verbose "Reset of local repository..."
                 git -C $this.LocalPath reset --hard
                 git -C $this.LocalPath clean -fd
             }
 
-            Write-Verbose "Mise à jour du dépôt local..."
+            Write-Verbose "Updating local repository..."
             $pullResult = git -C $this.LocalPath pull origin $this.Branch 2>&1
 
             if ($LASTEXITCODE -ne 0) {
-                Write-Error "Échec de la mise à jour du dépôt : $pullResult"
+                Write-Error "Repository update failure : $pullResult"
             }
         }
     }
