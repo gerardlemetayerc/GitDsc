@@ -17,9 +17,6 @@ class GitConf {
     [string] $Value
 
     [DscProperty(Mandatory)]
-    [Hashtable] $Config
-
-    [DscProperty(Mandatory)]
     [Ensure]
     $Ensure
 
@@ -61,6 +58,7 @@ class GitConf {
         if($this.ConfScope -match "Global"){$scope = '--global'}
         Write-Verbose "Setting Git $($this.ConfScope) : $($this.Name) = $($this.Value)"
         if($this.Ensure -like "Present"){
+            Write-Verbose "Executing git config $scope $($this.Name) $($this.Value))"
             git config $scope $this.Name $this.Value
         }else{
             git config --unset $scope $this.Name
