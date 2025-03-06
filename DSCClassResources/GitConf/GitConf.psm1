@@ -9,7 +9,7 @@ enum ConfScope {
 }
 
 [DscResource()]
-class GitGlobalConf {
+class GitConf {
     [DscProperty(Key)]
     [string] $Name
 
@@ -30,7 +30,7 @@ class GitGlobalConf {
     [ConfScope]
     $ConfScope
 
-    [GitGlobalConf] Get() {
+    [GitConf] Get() {
         return $this
     }
 
