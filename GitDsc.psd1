@@ -10,5 +10,5 @@
     )
     RequiredModules = @('PSDesiredStateConfiguration')
     CompatiblePSEditions = @('Desktop', 'Core')
-    DscResourcesToExport = @('GitSync')
+    DscResourcesToExport = @('GitSync', 'GitConf')
 }
