@@ -23,6 +23,9 @@ class GitGlobalConf {
     [Ensure]
     $Ensure
 
+    [DscProperty]
+    $RepoPath    
+
     [DscProperty(Mandatory)]
     [ConfScope]
     $ConfScope
@@ -34,6 +37,13 @@ class GitGlobalConf {
     [bool] Test() {
         $scope = ''
         if($this.ConfScope -match "Global"){$scope = '--global'}
+        else{
+            if(Test-Path $this.RepoPath){
+                Set-Location $this.RepoPath
+            }else{
+                Write-Error "Target repository $($this.RepoPath) not found"
+            }
+        }
         $CurrentValue = git config $scope --get $this.Name
         if($null -ne $CurrentValue -and $this.Ensure -match "Absent"){
             Write-Verbose "Parameter should be absent but found in configuration."
